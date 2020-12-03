@@ -4,7 +4,23 @@ html, body {
 	height: 100%;
 }
 
+pre {
+	background-color: #ddd;
+	padding: .5em;
+	width: fit-content;
+}
+
+input[name=repo] {
+	width: 20rem;
+}
+
+input[name=max] {
+	width: 3rem;
+}
+
 body {
+	display: flex;
+	flex-direction: column;
 	color: #333;
 	margin: 0;
 	padding: 8px;

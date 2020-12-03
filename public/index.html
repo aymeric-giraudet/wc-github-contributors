@@ -4,18 +4,74 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <title>Svelte app</title>
+    <title>github-contributors</title>
 
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="stylesheet" href="/global.css" />
     <link rel="stylesheet" href="/build/bundle.css" />
 
     <script defer src="/build/bundle.js"></script>
+    <script>
+      let repo = 'webcomponents/webcomponents.org'
+      let max = '5'
+
+      function render() {
+        const githubContributors = document.querySelector('github-contributors')
+        githubContributors.setAttribute('repo', repo)
+        githubContributors.setAttribute('max', max)
+        const code = document.getElementById('code')
+        code.textContent = `<github-contributors repo="${repo}" max="${max}" />`
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const repoInput = document
+          .querySelector('input[name=repo]')
+          .addEventListener(
+            'keydown',
+            debounce(function (evt) {
+              repo = evt.target.value
+              render()
+            }, 500),
+          )
+        const numberInput = document
+          .querySelector('input[name=max]')
+          .addEventListener('change', function (evt) {
+            max = evt.target.value
+            render()
+          })
+
+        render()
+      })
+
+      function debounce(func, wait) {
+        let timeout
+
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout)
+            func(...args)
+          }
+
+          clearTimeout(timeout)
+          timeout = setTimeout(later, wait)
+        }
+      }
+    </script>
   </head>
 
   <body>
+    <form>
+      <label for="repo">repo:</label>
+      <input type="text" name="repo" value="webcomponents/webcomponents.org" />
+      <label for="max">max:</label>
+      <input type="number" name="max" value="5" />
+    </form>
+
     <github-contributors
       repo="webcomponents/webcomponents.org"
+      max="5"
     ></github-contributors>
+
+    <pre id="code"></pre>
   </body>
 </html>
